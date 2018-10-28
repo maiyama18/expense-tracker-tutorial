@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { compose } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import AddCategory from './AddCategory'
+import { selectCategory } from '../redux/categories'
 
 class CategoryList extends Component {
   render() {
-    const { categories } = this.props
+    const { categories, selectedCategory } = this.props
+    const { selectCategory } = this.props
 
     return (
       <div>
         <div>
           {categories.map(category => (
-            <div key={category}>{category}</div>
+            <div 
+              key={category}
+              style={{background: category === selectedCategory ? '#988afe' : '#ffffff'}}
+              onClick={() => selectCategory(category)}
+            >
+              {category}
+            </div>
           ))}
         </div>
         <AddCategory />
@@ -23,6 +31,7 @@ class CategoryList extends Component {
 
 const mapStateToProps = state => {
   const { uid } = state.firebase.auth
+  const { selectedCategory } = state.categories
   const categories = state.firestore.ordered.categories 
     ? state.firestore.ordered.categories.map(c => c.name)
     : []
@@ -30,9 +39,14 @@ const mapStateToProps = state => {
   return {
     uid,
     categories, 
+    selectedCategory,
   }
 }
-const mapDispatchToProps = {}
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({
+    selectCategory,
+  }, dispatch),
+})
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
