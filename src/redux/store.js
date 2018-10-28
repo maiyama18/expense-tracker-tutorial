@@ -1,5 +1,4 @@
-import { createStore, compose, applyMiddleware } from 'redux'
-import logger from 'redux-logger'
+import { createStore, compose } from 'redux'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
@@ -11,18 +10,13 @@ import firebaseConfig from '../firebaseConfig'
 firebase.initializeApp(firebaseConfig)
 firebase.firestore().settings({ timestampsInSnapshots: true })
 
-const middlewares = []
-if (process.env.NODE_ENV !== 'production') {
-  middlewares.push(logger)
-}
-
 const enhancers = [
   reduxFirestore(firebase),
   reactReduxFirebase(firebase, {
     userProfile: 'users',
     useFirestoreForProfile: true,
+    enableLogging: true,
   }),
-  applyMiddleware(...middlewares),
 ]
 
 const composedEnhancers = compose(...enhancers)

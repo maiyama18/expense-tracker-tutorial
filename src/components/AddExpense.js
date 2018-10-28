@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { compose, connect } from 'react-redux'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 
 class AddExpense extends Component {

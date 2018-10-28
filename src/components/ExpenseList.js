@@ -6,13 +6,14 @@ import AddExpense from './AddExpense'
 
 class ExpenseList extends Component {
   render() {
-    const { categories, selectedCategory } = this.props
+    const { expenses, selectedCategory } = this.props
     const { selectCategory } = this.props
 
     return (
       <div>
+        hello
         <div>
-          {categories.map(category => (
+          {expenses.map(category => (
             <div 
               key={category}
               style={{background: category === selectedCategory ? '#988afe' : '#ffffff'}}
@@ -42,13 +43,13 @@ const mapDispatchToProps = {}
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => {
-    if (!props.uid) return []
+    if (!props.uid || !props.selectedCategory) return []
     return [
       {
         collection: 'expenses',
         where: [
           ['uid', '==', props.uid],
-          ['category', '==', props.selectCategory],
+          ['category', '==', props.selectedCategory],
         ],
         orderBy: ['cost', 'desc'],
       },
