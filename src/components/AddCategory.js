@@ -36,7 +36,7 @@ class AddCategory extends Component {
           value={text}
           onChange={e => this.setState({ text: e.target.value })}
         />
-        <button onClick={e => this.addCategory()}>Add Category</button>
+        <button onClick={() => this.addCategory()}>Add Category</button>
       </div>
     )
   }
